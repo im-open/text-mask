@@ -120,7 +120,7 @@
     "url-loader": "^0.5.7",
     "vue": "^2.0.8",
     "vue-html-loader": "^1.2.3",
-    "vue-loader": "^9.9.5",
+    "vue-loader": "^17.4.2",
     "webpack": "^1.12.12",
     "webpack-dev-server": "^1.14.1"
   },
