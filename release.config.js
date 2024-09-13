@@ -23,7 +23,7 @@ const extraGithubConfig = isMainBranch ?
   {} :
   {
     successComment: `
-This PR is part of this prerelease version on ${packageNpmName} for testing: \${nextRelease.version}
+This PR is part of this prerelease version on \`${packageNpmName}\` for testing: \${nextRelease.version}
 You can test it by using:
 \`\`\`bash
 npm install ${packageNpmName}@${branchName}
