@@ -1,17 +1,32 @@
 import adjustCaretPosition from './adjustCaretPosition'
 import conformToMask from './conformToMask'
-import {convertMaskToPlaceholder, isString, isNumber, processCaretTraps} from './utilities'
-import {placeholderChar as defaultPlaceholderChar, strFunction} from './constants'
+import {
+  convertMaskToPlaceholder,
+  isString,
+  isNumber,
+  processCaretTraps,
+} from './utilities'
+import {
+  placeholderChar as defaultPlaceholderChar,
+  strFunction,
+} from './constants'
 
 const emptyString = ''
 const strNone = 'none'
 const strObject = 'object'
-const isAndroid = typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent)
-const defer = typeof requestAnimationFrame !== 'undefined' ? requestAnimationFrame : setTimeout
+const isAndroid =
+  typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent)
+const defer =
+  typeof requestAnimationFrame !== 'undefined' ?
+    requestAnimationFrame :
+    setTimeout
 
 export default function createTextMaskInputElement(config) {
   // Anything that we will need to keep between `update` calls, we will store in this `state` object.
-  const state = {previousConformedValue: undefined, previousPlaceholder: undefined}
+  const state = {
+    previousConformedValue: undefined,
+    previousPlaceholder: undefined,
+  }
 
   return {
     state,
@@ -19,15 +34,18 @@ export default function createTextMaskInputElement(config) {
     // `update` is called by framework components whenever they want to update the `value` of the input element.
     // The caller can send a `rawValue` to be conformed and set on the input element. However, the default use-case
     // is for this to be read from the `inputElement` directly.
-    update(rawValue, {
-      inputElement,
-      mask: providedMask,
-      guide,
-      pipe,
-      placeholderChar = defaultPlaceholderChar,
-      keepCharPositions = false,
-      showMask = false
-    } = config) {
+    update(
+      rawValue,
+      {
+        inputElement,
+        mask: providedMask,
+        guide,
+        pipe,
+        placeholderChar = defaultPlaceholderChar,
+        keepCharPositions = false,
+        showMask = false,
+      } = config
+    ) {
       // if `rawValue` is `undefined`, read from the `inputElement`
       if (typeof rawValue === 'undefined') {
         rawValue = inputElement.value
@@ -35,12 +53,18 @@ export default function createTextMaskInputElement(config) {
 
       // If `rawValue` equals `state.previousConformedValue`, we don't need to change anything. So, we return.
       // This check is here to handle controlled framework components that repeat the `update` call on every render.
-      if (rawValue === state.previousConformedValue) { return }
+      if (rawValue === state.previousConformedValue) {
+        return
+      }
 
       // Text Mask accepts masks that are a combination of a `mask` and a `pipe` that work together. If such a `mask` is
       // passed, we destructure it below, so the rest of the code can work normally as if a separate `mask` and a `pipe`
       // were passed.
-      if (typeof providedMask === strObject && providedMask.pipe !== undefined && providedMask.mask !== undefined) {
+      if (
+        typeof providedMask === strObject &&
+        providedMask.pipe !== undefined &&
+        providedMask.mask !== undefined
+      ) {
         pipe = providedMask.pipe
         providedMask = providedMask.mask
       }
@@ -60,8 +84,10 @@ export default function createTextMaskInputElement(config) {
       }
 
       // In framework components that support reactivity, it's possible to turn off masking by passing
-      // `false` for `mask` after initialization. See https://github.com/text-mask/text-mask/pull/359
-      if (providedMask === false) { return }
+      // `false` for `mask` after initialization. See https://github.com/im-open/text-mask/pull/359
+      if (providedMask === false) {
+        return
+      }
 
       // We check the provided `rawValue` before moving further.
       // If it's something we can't work with `getSafeRawValue` will throw.
@@ -78,10 +104,16 @@ export default function createTextMaskInputElement(config) {
       // If the `providedMask` is a function. We need to call it at every `update` to get the `mask` array.
       // Then we also need to get the `placeholder`
       if (typeof providedMask === strFunction) {
-        mask = providedMask(safeRawValue, {currentCaretPosition, previousConformedValue, placeholderChar})
+        mask = providedMask(safeRawValue, {
+          currentCaretPosition,
+          previousConformedValue,
+          placeholderChar,
+        })
 
         // disable masking if `mask` is `false`
-        if (mask === false) { return }
+        if (mask === false) {
+          return
+        }
 
         // mask functions can setup caret traps to have some control over how the caret moves. We need to process
         // the mask for any caret traps. `processCaretTraps` will remove the caret traps from the mask and return
@@ -93,7 +125,7 @@ export default function createTextMaskInputElement(config) {
 
         placeholder = convertMaskToPlaceholder(mask, placeholderChar)
 
-      // If the `providedMask` is not a function, we just use it as-is.
+        // If the `providedMask` is not a function, we just use it as-is.
       } else {
         mask = providedMask
       }
@@ -106,11 +138,15 @@ export default function createTextMaskInputElement(config) {
         pipe,
         placeholder,
         currentCaretPosition,
-        keepCharPositions
+        keepCharPositions,
       }
 
       // `conformToMask` returns `conformedValue` as part of an object for future API flexibility
-      const {conformedValue} = conformToMask(safeRawValue, mask, conformToMaskConfig)
+      const {conformedValue} = conformToMask(
+        safeRawValue,
+        mask,
+        conformToMaskConfig
+      )
 
       // The following few lines are to support the `pipe` feature.
       const piped = typeof pipe === strFunction
@@ -120,7 +156,10 @@ export default function createTextMaskInputElement(config) {
       // If `pipe` is a function, we call it.
       if (piped) {
         // `pipe` receives the `conformedValue` and the configurations with which `conformToMask` was called.
-        pipeResults = pipe(conformedValue, {rawValue: safeRawValue, ...conformToMaskConfig})
+        pipeResults = pipe(conformedValue, {
+          rawValue: safeRawValue,
+          ...conformToMaskConfig,
+        })
 
         // `pipeResults` should be an object. But as a convenience, we allow the pipe author to just return `false` to
         // indicate rejection. Or return just a string when there are no piped characters.
@@ -136,7 +175,7 @@ export default function createTextMaskInputElement(config) {
 
       // Before we proceed, we need to know which conformed value to use, the one returned by the pipe or the one
       // returned by `conformToMask`.
-      const finalConformedValue = (piped) ? pipeResults.value : conformedValue
+      const finalConformedValue = piped ? pipeResults.value : conformedValue
 
       // After determining the conformed value, we will need to know where to set
       // the caret position. `adjustCaretPosition` will tell us.
@@ -149,34 +188,53 @@ export default function createTextMaskInputElement(config) {
         currentCaretPosition,
         placeholderChar,
         indexesOfPipedChars: pipeResults.indexesOfPipedChars,
-        caretTrapIndexes
+        caretTrapIndexes,
       })
 
       // Text Mask sets the input value to an empty string when the condition below is set. It provides a better UX.
-      const inputValueShouldBeEmpty = finalConformedValue === placeholder && adjustedCaretPosition === 0
+      const inputValueShouldBeEmpty =
+        finalConformedValue === placeholder && adjustedCaretPosition === 0
       const emptyValue = showMask ? placeholder : emptyString
-      const inputElementValue = (inputValueShouldBeEmpty) ? emptyValue : finalConformedValue
+      const inputElementValue = inputValueShouldBeEmpty ?
+        emptyValue :
+        finalConformedValue
 
       state.previousConformedValue = inputElementValue // store value for access for next time
       state.previousPlaceholder = placeholder
 
       // In some cases, this `update` method will be repeatedly called with a raw value that has already been conformed
       // and set to `inputElement.value`. The below check guards against needlessly readjusting the input state.
-      // See https://github.com/text-mask/text-mask/issues/231
+      // See https://github.com/im-open/text-mask/issues/231
       if (inputElement.value === inputElementValue) {
         return
       }
 
       inputElement.value = inputElementValue // set the input value
       safeSetSelection(inputElement, adjustedCaretPosition) // adjust caret position
-    }
+    },
   }
 }
 
+function getActiveElement(element = document.activeElement) {
+  // We need to target the actual active element, drilling into shadow roots
+  if (element.shadowRoot && element.shadowRoot.activeElement) {
+    return getActiveElement(element.shadowRoot.activeElement)
+  }
+  return element
+}
+
 function safeSetSelection(element, selectionPosition) {
-  if (document.activeElement === element) {
+  if (getActiveElement() === element) {
     if (isAndroid) {
-      defer(() => element.setSelectionRange(selectionPosition, selectionPosition, strNone), 0)
+      defer(
+        () =>
+          element.setSelectionRange(
+            selectionPosition,
+            selectionPosition,
+            strNone
+          ),
+        0
+      )
     } else {
       element.setSelectionRange(selectionPosition, selectionPosition, strNone)
     }
@@ -193,7 +251,7 @@ function getSafeRawValue(inputValue) {
   } else {
     throw new Error(
       "The 'value' provided to Text Mask needs to be a string or a number. The value " +
-      `received was:\n\n ${JSON.stringify(inputValue)}`
+        `received was:\n\n ${JSON.stringify(inputValue)}`
     )
   }
 }
