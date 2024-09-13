@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import {render, screen, waitFor} from '@testing-library/react'
 import packageJson from '../package.json'
 
-const {InnerMaskedInput: MaskedInput, conformToMask} = isVerify() ?
+const {default: MaskedInput, conformToMask} = isVerify() ?
   require(`../${packageJson.main}`) :
   require('../src/reactTextMask.js')
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import createTextMaskInputElement from '../../core/src/createTextMaskInputElement'
 import {isNil} from '../../core/src/utilities'
 
-export class InnerMaskedInput extends React.PureComponent {
+export default class MaskedInput extends React.PureComponent {
   constructor(...args) {
     super(...args)
 
@@ -108,7 +108,7 @@ export class InnerMaskedInput extends React.PureComponent {
   }
 }
 
-InnerMaskedInput.propTypes = {
+MaskedInput.propTypes = {
   mask: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.func,
@@ -130,12 +130,8 @@ InnerMaskedInput.propTypes = {
   ]),
 }
 
-InnerMaskedInput.defaultProps = {
+MaskedInput.defaultProps = {
   render: (ref, props) => <input ref={ref} {...props} />,
 }
-
-export default (forwardRef || ((mIn) => mIn))(function MaskedInput(props, ref) {
-  return <InnerMaskedInput {...props} forwardedRef={ref} />
-})
 
 export {default as conformToMask} from '../../core/src/conformToMask.js'
