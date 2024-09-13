@@ -1,5 +1,6 @@
 {
   "name": "@im-open/react-text-mask",
+  "private": false,
   "version": "5.5.0",
   "description": "React input component that accepts mask pattern",
   "main": "dist/reactTextMask.js",
@@ -10,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/im-open/text-mask.git"
+    "url": "git+https://github.com/im-open/text-mask.git"
   },
   "homepage": "https://github.com/im-open/text-mask/tree/master/react/#readme",
   "peerDependencies": {

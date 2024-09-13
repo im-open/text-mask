@@ -1,5 +1,6 @@
 {
-  "name": "text-mask-core",
+  "name": "@im-open/text-mask-core",
+  "private": false,
   "version": "5.1.2",
   "description": "Core of https://github.com/im-open/text-mask",
   "main": "dist/textMaskCore.js",
@@ -10,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/im-open/text-mask.git"
+    "url": "git+https://github.com/im-open/text-mask.git"
   },
   "homepage": "https://github.com/im-open/text-mask/core/#readme",
   "keywords": [
