@@ -1,12 +1,12 @@
 module.exports = {
-  extends: '../babel.config.js',
+  extends: "../babel.config.js",
   presets: [
     [
-      '@babel/react',
+      "@babel/preset-react",
       {
-        runtime: 'automatic',
+        runtime: "automatic",
       },
     ],
   ],
-  include: ['../**/*.js'],
-}
+  include: ["../**/*.js", "../**/*.jsx"],
+};
