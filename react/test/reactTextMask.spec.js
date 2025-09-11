@@ -39,6 +39,7 @@ describe("MaskedInput", () => {
       )
     ).not.to.throw();
   });
+
   it("renders a single input element", () => {
     const maskedInput = render(
       <MaskedInput
@@ -63,6 +64,7 @@ describe("MaskedInput", () => {
     );
     expect(() => screen.getByRole("textbox")).not.to.throw();
   });
+
   it("renders correctly with an undefined value", () => {
     const maskedInput = render(
       <MaskedInput
@@ -88,6 +90,7 @@ describe("MaskedInput", () => {
     const renderedDOMComponent = screen.getByRole("textbox");
     expect(renderedDOMComponent.value).to.equal("");
   });
+
   it("renders correctly with an initial value", () => {
     const maskedInput = render(
       <MaskedInput
@@ -114,6 +117,7 @@ describe("MaskedInput", () => {
     const renderedDOMComponent = screen.getByRole("textbox");
     expect(renderedDOMComponent.value).to.equal("(123) ___-____");
   });
+
   it("renders mask instead of empty string when showMask is true", () => {
     const maskedInput = render(
       <MaskedInput
@@ -140,6 +144,7 @@ describe("MaskedInput", () => {
     const renderedDOMComponent = screen.getByRole("textbox");
     expect(renderedDOMComponent.value).to.equal("(___) ___-____");
   });
+
   it("does not render mask instead of empty string when showMask is false", () => {
     const maskedInput = render(
       <MaskedInput
@@ -166,119 +171,6 @@ describe("MaskedInput", () => {
     const renderedDOMComponent = screen.getByRole("textbox");
     expect(renderedDOMComponent.value).to.equal("");
   });
-
-  // Testing the internals of the component like this is not ideal, and not supported by the testing-library.
-  // it("calls createTextMaskInputElement with the correct config", () => {
-  //   const mask = [
-  //     "(",
-  //     /\d/,
-  //     /\d/,
-  //     /\d/,
-  //     ")",
-  //     " ",
-  //     /\d/,
-  //     /\d/,
-  //     /\d/,
-  //     "-",
-  //     /\d/,
-  //     /\d/,
-  //     /\d/,
-  //     /\d/,
-  //   ];
-  //   const guide = true;
-  //   const placeholderChar = "*";
-  //   const keepCharPositions = true;
-  //   const maskedInput = render(
-  //     <MaskedInput
-  //       mask={mask}
-  //       guide={guide}
-  //       placeholderChar={placeholderChar}
-  //       keepCharPositions={keepCharPositions}
-  //     />
-  //   );
-  //   const renderedDOMComponent = screen.getByRole("textbox");
-  //   // stub the createTextMaskInputElement method
-  //   maskedInput.createTextMaskInputElement = (config) => {
-  //     expect(typeof config).to.equal("object");
-  //     expect(config.inputElement).to.equal(renderedDOMComponent);
-  //     expect(config.mask).to.equal(mask);
-  //     expect(config.guide).to.equal(guide);
-  //     expect(config.placeholderChar).to.equal(placeholderChar);
-  //     expect(config.keepCharPositions).to.equal(keepCharPositions);
-  //     return {
-  //       update() {},
-  //     };
-  //   };
-  //   console.log("Here's the maskedInput:");
-  //   console.log(maskedInput);
-  //   maskedInput.initTextMask();
-  // });
-
-  // Testing the internals of the component like this is not ideal, and not supported by the testing-library.
-  // it("sets textMaskInputElement and calls textMaskInputElement.update with the correct value", () => {
-  //   const maskedInput = render(
-  //     <MaskedInput
-  //       value="123"
-  //       mask={[
-  //         "(",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         ")",
-  //         " ",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         "-",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //       ]}
-  //     />
-  //   );
-  //   // stub the createTextMaskInputElement method
-  //   maskedInput.createTextMaskInputElement = () => {
-  //     return {
-  //       update(value) {
-  //         expect(value).to.equal("123");
-  //       },
-  //     };
-  //   };
-  //   maskedInput.initTextMask();
-  //   expect(typeof maskedInput.textMaskInputElement).to.equal("object");
-  // });
-
-  // Testing the internals of the component like this is not ideal, and not supported by the testing-library.
-  // it("initializes textMaskInputElement property", () => {
-  //   const maskedInput = render(
-  //     <MaskedInput
-  //       mask={[
-  //         "(",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         ")",
-  //         " ",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         "-",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //       ]}
-  //       guide={true}
-  //     />
-  //   );
-  //   expect(typeof maskedInput.textMaskInputElement).to.equal("object");
-  //   expect(typeof maskedInput.textMaskInputElement.state).to.equal("object");
-  //   expect(
-  //     typeof maskedInput.textMaskInputElement.state.previousConformedValue
-  //   ).to.equal("string");
-  //   expect(typeof maskedInput.textMaskInputElement.update).to.equal("function");
-  // });
 
   it("does not render masked characters", () => {
     const maskedInput = render(
@@ -334,96 +226,13 @@ describe("MaskedInput", () => {
     user.type(renderedDOMComponent, "abc");
     expect(renderedDOMComponent.value).to.equal("");
   });
+
   it("can be disabled by setting the mask to false", () => {
     const maskedInput = render(<MaskedInput value="123abc" mask={false} />);
     const renderedDOMComponent = screen.getByRole("textbox");
     expect(renderedDOMComponent.value).to.equal("123abc");
   });
 
-  // Testing the internals of the component like this is not ideal, and not supported by the testing-library.
-  // it("can call textMaskInputElement.update to update the inputElement.value", () => {
-  //   const maskedInput = render(
-  //     <MaskedInput
-  //       mask={[
-  //         "(",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         ")",
-  //         " ",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         "-",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //       ]}
-  //     />
-  //   );
-  //   const renderedDOMComponent = screen.getByRole("textbox");
-  //   expect(renderedDOMComponent.value).to.equal("");
-  //   renderedDOMComponent.value = "12345";
-  //   maskedInput.textMaskInputElement.update();
-  //   expect(renderedDOMComponent.value).to.equal("(123) 45_-____");
-  // });
-
-  // Testing the internals of the component like this is not ideal, and not supported by the testing-library.
-  // it("can pass value to textMaskInputElement.update method", () => {
-  //   const maskedInput = render(
-  //     <MaskedInput
-  //       value="123"
-  //       mask={[
-  //         "(",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         ")",
-  //         " ",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         "-",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //       ]}
-  //     />
-  //   );
-  //   const renderedDOMComponent = screen.getByRole("textbox");
-  //   expect(renderedDOMComponent.value).to.equal("(123) ___-____");
-  //   maskedInput.textMaskInputElement.update("1234");
-  //   expect(renderedDOMComponent.value).to.equal("(123) 4__-____");
-  // });
-
-  // Testing the internals of the component like this is not ideal, and not supported by the testing-library.
-  // it("can pass textMaskConfig to textMaskInputElement.update method", () => {
-  //   const maskedInput = render(<MaskedInput value="123" mask={false} />);
-  //   const renderedDOMComponent = screen.getByRole("textbox");
-  //   expect(renderedDOMComponent.value).to.equal("123");
-  //   maskedInput.textMaskInputElement.update("1234", {
-  //     inputElement: renderedDOMComponent,
-  //     mask: [
-  //       "(",
-  //       /[1-9]/,
-  //       /\d/,
-  //       /\d/,
-  //       ")",
-  //       " ",
-  //       /\d/,
-  //       /\d/,
-  //       /\d/,
-  //       "-",
-  //       /\d/,
-  //       /\d/,
-  //       /\d/,
-  //       /\d/,
-  //     ],
-  //   });
-  //   expect(renderedDOMComponent.value).to.equal("(123) 4__-____");
-  // });
   it("accepts function as mask property", () => {
     const maskedInput = render(
       <MaskedInput
@@ -452,11 +261,13 @@ describe("MaskedInput", () => {
     const renderedDOMComponent = screen.getByRole("textbox");
     expect(renderedDOMComponent.value).to.equal("(123) 4__-____");
   });
+
   it("accepts object as mask property", () => {
     const maskedInput = render(<MaskedInput value="abc" mask={emailMask} />);
     const renderedDOMComponent = screen.getByRole("textbox");
     expect(renderedDOMComponent.value).to.equal("abc@ .");
   });
+
   it("accepts pipe function", () => {
     const maskedInput = render(
       <MaskedInput
@@ -486,6 +297,7 @@ describe("MaskedInput", () => {
     const renderedDOMComponent = screen.getByRole("textbox");
     expect(renderedDOMComponent.value).to.equal("abc");
   });
+
   it("calls textMaskInputElement.update and props.onChange when a change event is received", () => {
     const onChangeSpy = sinon.spy((event) => {
       expect(event.target.value).to.equal("123");
@@ -519,6 +331,7 @@ describe("MaskedInput", () => {
     });
     expect(onChangeSpy.callCount).to.equal(1);
   });
+
   it("calls props.onBlur when a change event is received", () => {
     const onBlurSpy = sinon.spy((event) => {
       expect(event.target.value).to.equal("(123) ___-____");
@@ -550,63 +363,7 @@ describe("MaskedInput", () => {
     fireEvent.blur(renderedDOMComponent);
     expect(onBlurSpy.callCount).to.equal(1);
   });
-  // it("calls textMaskInputElement.update when an input event is received when props.onChange is not set", () => {
-  //   const maskedInput = render(
-  //     <MaskedInput
-  //       value="123"
-  //       mask={[
-  //         "(",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         ")",
-  //         " ",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         "-",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //       ]}
-  //       guide={true}
-  //     />
-  //   );
-  //   const renderedDOMComponent = screen.getByRole("textbox");
-  //   maskedInput.textMaskInputElement.update = sinon.spy(() => {});
-  //   fireEvent.change(renderedDOMComponent, {
-  //     target: { value: "456" },
-  //   });
-  //   expect(maskedInput.textMaskInputElement.update.callCount).to.equal(1);
-  // });
-  // it("calls textMaskInputElement.update via onChange method", () => {
-  //   const maskedInput = render(
-  //     <MaskedInput
-  //       value="123"
-  //       mask={[
-  //         "(",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         ")",
-  //         " ",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         "-",
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //         /\d/,
-  //       ]}
-  //       guide={true}
-  //     />
-  //   );
-  //   maskedInput.textMaskInputElement.update = sinon.spy(() => {});
-  //   maskedInput.onChange();
-  //   expect(maskedInput.textMaskInputElement.update.callCount).to.equal(1);
-  // });
+
   // test fix for issues #230, #483, #778 etc.
   it("works correct in stateful Component", async () => {
     class StatefulComponent extends React.Component {
